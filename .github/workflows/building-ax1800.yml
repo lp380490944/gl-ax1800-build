@@ -39,8 +39,8 @@ jobs:
         sudo -E apt-get -qq clean
         sudo apt install -y build-essential libncurses5-dev gawk git libssl-dev gettext zlib1g-dev swig unzip time rsync python3 python3-setuptools python3-yaml
         sudo timedatectl set-timezone "$TZ"
-        #git config --global user.email "240038901@qq.com"  ##修改成自己的GitHub注册邮箱地址
-        #git config --global user.name "monw" ##修改成自己的GitHub用户名。
+        git config --global user.email "240038901@qq.com"  ##修改成自己的GitHub注册邮箱地址
+        git config --global user.name "monw" ##修改成自己的GitHub用户名。
     - name: Clone source code and building rom
       run: |
         df -hT $PWD
@@ -55,9 +55,9 @@ jobs:
         sed -i 's/192.168.1.1/192.168.8.1/' package/base-files/files/bin/config_generate
         sed -i 's/OpenWrt/AX1800/' package/base-files/files/bin/config_generate
         sed -i 's/UTC/CST-8/' package/base-files/files/bin/config_generate
-        cd package
-        git clone https://github.com/jerrykuku/luci-theme-argon.git
-        cd .. 
+        #cd package
+        #git clone https://github.com/jerrykuku/luci-theme-argon.git
+        #cd .. 
         sed -i 's/luci-theme-bootstrap/luci-theme-argon/' feeds/luci/collections/luci/Makefile  ##更换默认主题
         cp ax1800.config .config
         echo -e "$(nproc) thread compile" ##action一般是二线程，所以比较慢些
@@ -67,7 +67,7 @@ jobs:
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
       run: |
-        cd openwrt-gl-ax1800/bin/targets/*/*
+        cd openwrt-gl-ax1800/bin/targets/*
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
