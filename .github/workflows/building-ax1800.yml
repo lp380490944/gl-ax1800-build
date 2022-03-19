@@ -45,8 +45,9 @@ jobs:
       run: |
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH
-        sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default ##添加kenzok8源，与上条源只选一种
-        sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default ##添加kenzok8源        
+        cd openwrt-gl-ax1800
+        #sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default ##添加kenzok8源，与上条源只选一种
+        #sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default ##添加kenzok8源        
         sed -i '/DISTRIB_REVISION/d' package/base-files/files/etc/openwrt_release
         echo "DISTRIB_REVISION='GL-iNet Inc'" >> package/base-files/files/etc/openwrt_release
         sed -i '/DISTRIB_DESCRIPTION/d' package/base-files/files/etc/openwrt_release
