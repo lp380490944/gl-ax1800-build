@@ -1,4 +1,4 @@
-name: Build OpenWrt
+name: AX1800
 
 on:
   watch:
@@ -17,7 +17,7 @@ env:
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_WETRANSFER: true
-  UPLOAD_RELEASE: false
+  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -46,21 +46,17 @@ jobs:
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH
         cd openwrt-gl-ax1800
-        #sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default ##添加kenzok8源，与上条源只选一种
-        #sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default ##添加kenzok8源 
+        sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default ##添加kenzok8源，与上条源只选一种
+        sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default ##添加kenzok8源 
         ./scripts/feeds update -a
         ./scripts/feeds install -a  
         sed -i '/DISTRIB_REVISION/d' package/base-files/files/etc/openwrt_release
-        echo "DISTRIB_REVISION='GL-iNet Inc'" >> package/base-files/files/etc/openwrt_release
+        echo "DISTRIB_REVISION='|| GL-iNet Inc'" >> package/base-files/files/etc/openwrt_release
         sed -i '/DISTRIB_DESCRIPTION/d' package/base-files/files/etc/openwrt_release
         echo "DISTRIB_DESCRIPTION='OpenWrt R22.3.20 '" >> package/base-files/files/etc/openwrt_release
         sed -i 's/192.168.1.1/192.168.8.1/' package/base-files/files/bin/config_generate
         sed -i 's/OpenWrt/AX1800/' package/base-files/files/bin/config_generate
-        sed -i 's/UTC/CST-8/' package/base-files/files/bin/config_generate
-        #cd package
-        #git clone https://github.com/jerrykuku/luci-theme-argon.git
-        #cd .. 
-        #sed -i 's/luci-theme-bootstrap/luci-theme-argon/' feeds/luci/collections/luci/Makefile  ##更换默认主题
+        sed -i 's/UTC/CST-8/' package/base-files/files/bin/config_generate 
         cp ax1800.config .config
         echo -e "$(nproc) thread compile" ##action一般是二线程，所以比较慢些
         make -j$(nproc) || make -j1 || make -j1 V=s
