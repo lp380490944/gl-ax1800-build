@@ -60,6 +60,7 @@ jobs:
         sed -i 's/OpenWrt/SFT1200/' package/base-files/files/bin/config_generate
         #sed -i 's/UTC/CST-8/' package/base-files/files/bin/config_generate 
         echo -e "$(nproc) thread compile" ##action一般是二线程，所以比较慢些
+        make -j2 download
         make -j$(nproc) || make -j1 || make -j1 V=s
         
     - name: Organize files
