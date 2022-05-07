@@ -55,11 +55,13 @@ jobs:
         sed -i '/DISTRIB_REVISION/d' package/base-files/files/etc/openwrt_release
         echo "DISTRIB_REVISION=' GL-iNet Inc'" >> package/base-files/files/etc/openwrt_release
         sed -i '/DISTRIB_DESCRIPTION/d' package/base-files/files/etc/openwrt_release
-        echo "DISTRIB_DESCRIPTION='OpenWrt R22.5.6 '" >> package/base-files/files/etc/openwrt_release
+        echo "DISTRIB_DESCRIPTION='OpenWrt R22.5.8 '" >> package/base-files/files/etc/openwrt_release
         sed -i 's/192.168.1.1/192.168.8.1/' package/base-files/files/bin/config_generate
         sed -i 's/OpenWrt/SFT1200/' package/base-files/files/bin/config_generate
         #sed -i 's/UTC/CST-8/' package/base-files/files/bin/config_generate 
         echo -e "$(nproc) thread compile" ##action一般是二线程，所以比较慢些
+        rm -rf .config
+        cp .config.sft1200 .config
         make -j2 download
         make -j$(nproc) || make -j1 || make -j1 V=s
         
